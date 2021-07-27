@@ -1,0 +1,20 @@
+
+Hello,
+this is program doing an assembler reading work by reading a file and divide the relevant parts and use it.
+
+1.	to run the program please open the terminal and enter in the command line: make
+	the press enter.
+
+to run a program with a file make sure the files original name is with a ".ps" ending, for example: NAME.ps.
+
+2.	write in the terminal: ./assembler NAME
+	then press enter
+	
+the program will run now and write new files to the prog folder.
+in case of an error it will write in the termanl in wich line was the problem
+
+
+**very importent** - 
+the program works with excel like file format use tab between the LABELS, DIRECTIVE, FUNCTIONS and back space for between the operands
+
+
