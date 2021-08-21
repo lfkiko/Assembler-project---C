@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -g -Wall -ansi -pedantic
 
-assembler: myAssembler.o lists.o side_functions.o
-	$(CC) $(CFLAGS) myAssembler.o lists.o side_functions.o -o assembler
+assembler: myAssembler.o lists.o side_functions.o first_read_functions.o
+	$(CC) $(CFLAGS) myAssembler.o lists.o side_functions.o first_read_functions.o -o assembler
 
 myAssembler.o: myAssembler.c main_header.h
 	$(CC) $(CFLAGS) -c myAssembler.c -o myAssembler.o
@@ -12,6 +12,9 @@ lists.o: lists.c main_header.h
 	
 side_functions.o: side_functions.c main_header.h
 	$(CC) $(CFLAGS) -c side_functions.c -o side_functions.o
+	
+first_read_functions.o:  first_read_functions.c main_header.h
+	$(CC) $(CFLAGS) -c first_read_functions.c -o first_read_functions.o
  
 clean:
 	rm -f *.o assembler

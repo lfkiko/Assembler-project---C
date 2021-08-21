@@ -15,6 +15,7 @@ This is the main header, it contain all the relevant headers for the hall progra
 /*typdefs and strctures*/
 
 #include "structures.h"
+#include "first_read.h"
 
 /*Defines fot the progaram*/
 #define fileName 24
