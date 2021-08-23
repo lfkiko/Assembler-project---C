@@ -6,15 +6,19 @@ This functions are for the first read
 
 int FUNC_PRES[NUM_OF_FUNC] = {mov_b, cmp_b, add_b, sub_b, lea_b, clr_b, not_b, inc_b, dec_b, jmp_b, bne_b, jsr_b, red_b, prn_b, rts_b, stop_b};
 
+/*
+This function checks for LABELs in the beginning of the line.
+*/
 void LABEL_CHECK(char** TEMP, char** LABEL, status* assembler, int LC) {
-	if(*TEMP[strlen(*TEMP) - 1] == ':') {												/*checks for LABEL*/
+
+	if(*TEMP[strlen(*TEMP) - 1] == ':') {															/*checks for LABEL*/
 		if((*TEMP[strlen(*TEMP) - 2] != ' ') && (*TEMP[strlen(*TEMP) - 2] != '\t')) {
 			*LABEL = *TEMP;
 			*TEMP = strtok(NULL, "	");
 			*LABEL[strlen(*LABEL) - 1] = '\0';
 		}
 		else {
-			printf("ERROR in line %d, %s is no avalide LABEL.\n", LC, *TEMP);
+			printf("ERROR in line %d, %s is not an avalide LABEL.\n", LC, *TEMP);
 			*assembler = error;
 		}
 	}
@@ -24,8 +28,12 @@ void LABEL_CHECK(char** TEMP, char** LABEL, status* assembler, int LC) {
 } /*End of LABEL_CHECK*/
 
 
+/*
+This function checks for DIRECTIVE in a line.
+*/
 int DIRECTIVE_CHECK(char** TEMP, char** DIRECTIVE, char** LABEL) {
-	if(*TEMP[0] == '.') {																/*check for DIRECTIVE*/
+
+	if(*TEMP[0] == '.') {																			/*check for a DIRECTIVE prefix*/
 		*DIRECTIVE = *TEMP;
 		if((strncmp(*DIRECTIVE, ".extern", 7) == 0) || (strncmp(*DIRECTIVE, ".entry", 6) == 0)) {
 			return 0;			
@@ -42,24 +50,31 @@ int DIRECTIVE_CHECK(char** TEMP, char** DIRECTIVE, char** LABEL) {
 			}
 			return 4;
 		}		
-	}	/*end of TEMP[0] == '.'*/
-    	            
-	*DIRECTIVE = NULL;
-	if(*LABEL != NULL) {
-		return 5;
 	}
-	return 6;	
+    else {
+    	*DIRECTIVE = NULL;
+    	if(*LABEL != NULL) {
+    		return 5;
+    	}
+    	return 6;
+    }
+    return 7;
 } /*End of DIRECTIVE_CHECK*/
 
-void FUNCTION_CHECK(int j, char** TEMP, char** LABEL, char** DIRECTIVE, char** FIRST_OP, char** SECOND_OP, char** OPCODE_FUNCT, OBJ_LIST** OBJ_HEAD,
-status* assembler, int* LC, int* IC, int* DC, int first_op_val, int second_op_val) {
+
+/*
+This function checks for FUNCTION in the "library" and verifies the operands if needed.
+*/
+void FUNCTION_CHECK(int j, char** TEMP, char** LABEL, char** DIRECTIVE, char** FIRST_OP, char** SECOND_OP, char** OPCODE_FUNCT,
+					OBJ_LIST** OBJ_HEAD, status* assembler, int* LC, int* IC, int* DC, int first_op_val, int second_op_val) {
+					
 	int first_op, second_op, opcode_funct, machine_code;
-	switch (j) {
-						case 0: 	
-						case 1:
-						case 2:
-						case 3:
-						case 4:
+	switch (j) { 
+/*mov*/					case 0: 	
+/*cmp*/					case 1:
+/*add*/					case 2:
+/*sub*/					case 3:
+/*lea*/					case 4:
 							*TEMP = strtok(NULL, ",");
 							*FIRST_OP = *TEMP;
 							*TEMP = strtok(NULL, "\n");
@@ -96,16 +111,16 @@ status* assembler, int* LC, int* IC, int* DC, int first_op_val, int second_op_va
 								*assembler = error;
 							}
 							break;
-	
-						case 5:
-						case 6:
-						case 7:
-						case 8:
-						case 9:
-						case 10:
-						case 11:
-						case 12:
-						case 13:
+	 
+/*clr*/					case 5:
+/*not*/					case 6:
+/*inc*/					case 7:
+/*dec*/					case 8:
+/*jmp*/					case 9:
+/*bne*/					case 10:
+/*jsr*/					case 11:
+/*red*/					case 12:
+/*prn*/					case 13:
 							*TEMP = strtok(NULL, "\n");
 							if(*TEMP == NULL) {
 								printf("ERROR in line %d, not enough operands for %s.\n", *LC, *OPCODE_FUNCT);
@@ -138,8 +153,8 @@ status* assembler, int* LC, int* IC, int* DC, int first_op_val, int second_op_va
 							}
 							break;
 
-						case 14:
-						case 15:
+/*rts*/					case 14:
+/*stop*/					case 15:
 							*TEMP = strtok(NULL, " ");
 							if(*TEMP != NULL) {
 								printf("ERROR in line %d, no need in operands for %s.\n", *LC, *OPCODE_FUNCT);
